@@ -1,0 +1,4 @@
+step1-> Implement auth functionality using next auth
+step2-> Create a schema for the user
+step3-> Connect a database
+step4-> Custom Page For Login and Signup
