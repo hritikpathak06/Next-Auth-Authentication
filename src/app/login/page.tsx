@@ -6,11 +6,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import LoginForm from "@/components/client/form";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
-const LoginPage = () => {
+const LoginPage = async() => {
+  const session = await auth();
+  if(session?.user){
+    redirect("/")
+  }
   return (
     <div className=" flex justify-center items-center h-dvh">
       <Card className=" md:w-[30%] w-[90%]">
@@ -18,11 +24,7 @@ const LoginPage = () => {
           <CardTitle className=" text-center">Login Here</CardTitle>
         </CardHeader>
         <CardContent>
-          <form action="" className=" flex flex-col gap-3">
-            <Input placeholder="Email" type="email" />
-            <Input placeholder="Password" type="password" />
-            <Button type="submit">Login</Button>
-          </form>
+          <LoginForm />
         </CardContent>
         <CardFooter className=" flex flex-col gap-4">
           <span>Or</span>
