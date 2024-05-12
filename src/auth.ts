@@ -1,4 +1,4 @@
-import NextAuth, { CredentialsSignin } from "next-auth";
+import NextAuth, { AuthError, CredentialsSignin } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialProvider from "next-auth/providers/credentials";
 import User from "./libs/models/userModel";
@@ -56,5 +56,29 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   pages: {
     signIn: "/login",
+  },
+  callbacks: {
+    signIn: async ({ user, account }) => {
+      if (account?.provider === "google") {
+        connectToDatabase();
+        try {
+          const { email, name, image, id } = user;
+          const alreadyUser = await User.findOne({ email });
+
+          if (!alreadyUser) {
+            await User.create({
+              email,
+              name,
+              avatar: image,
+              googleId: id,
+            });
+          }
+          return true;
+        } catch (error) {
+          throw new AuthError("Error while creating user");
+        }
+      }
+      return false;
+    },
   },
 });

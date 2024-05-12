@@ -5,11 +5,8 @@ import { Input } from "../ui/input";
 import { credentialLogin } from "@/actions/login";
 import { useRouter } from "next/navigation";
 
-
-
-
 const LoginForm = () => {
-    const router = useRouter();
+  const router = useRouter();
   return (
     <form
       action={async (formData) => {
